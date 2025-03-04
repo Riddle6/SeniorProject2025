@@ -85,3 +85,13 @@ def makeMove(board, chests, x, y):
         else:
             board[x][y] = 'X'
             return 'Sonar did not detect anything. All treasure chests out of range.'
+
+def enterPlayerMove(previousMoves):
+    # Let the player enter their move. Return a two-item list of int xy coordinates.
+    print('Where do you want to drop the next sonar device? (0-59 0-14) (or type quit)')
+    while True:
+        move = input()
+        if move.lower() == 'quit':
+            print('Thanks for playing!')
+            sys.exit()
+            # -- Work in Progress -- #
