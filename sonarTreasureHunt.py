@@ -94,4 +94,62 @@ def enterPlayerMove(previousMoves):
         if move.lower() == 'quit':
             print('Thanks for playing!')
             sys.exit()
-            # -- Work in Progress -- #
+            
+        move = move.split()
+        if len(move) == 2 and move[0].isdigit() and move[1].isdigit() and isOnBoard(int(move[0]), int(move[1])):
+            if [int(move[0]), int(move[1])] in previousMoves:
+                print('You have already moved there.')
+                continue
+            return [int(move[0]), int(move[1])]
+        
+        print('Enter a number from 0 to 59, a space, then a number from 0 to 14.')
+
+def showInstructions():
+    print('''Instructions:
+You are the captain of the simon, a treasure-hunting ship. Your current mission
+is to use sonar devices to find three sunken treasure chests at the bottom of 
+the ocean. But you only have cheap sonar that finds distance, not direction.
+          
+Enter the coordinates to drop a sonar device. The ocean map will be marked with
+how far away the nearest chest is, or an X if it is beyond the sonar device's
+range. For example, the C marks are where chests are. The sonar device shows a
+3 because the closest chest is 3 spaces away.
+          
+                     1         2         3
+           012345678901234567890123456789012
+
+         0 ~~~~`~```~`~``~~~``~`~~``~~~``~`~ 0
+         1 ~`~`~``~~`~```~~~```~~`~`~~~`~~~~ 1
+         2 `~`C``3`~~~~`C`~~~~`````~~``~~~`` 2
+         3 ````````~~~`````~~~`~`````~`~``~` 3
+         4 ~`~~~~`~~`~~`C`~``~~`~~~`~```~``~ 4
+
+           012345678901234567890123456789012
+                     1         2         3
+(In the real game, chests are not visible in the ocean.)
+          
+Press enter to continue...''')
+    input()
+
+    print('''When you drop a sonar device directly on the chest, you retrieve it and the other
+sonar devices update to show how far away the next nearest chest is. The chests
+are beyond the range of the sonar devices on the left, so it shows an X.
+          
+                     1         2         3
+           012345678901234567890123456789012
+
+         0 ~~~~`~```~`~``~~~``~`~~``~~~``~`~ 0
+         1 ~`~`~``~~`~```~~~```~~`~`~~~`~~~~ 1
+         2 `~`X``7`~~~~`C`~~~~`````~~``~~~`` 2
+         3 ````````~~~`````~~~`~`````~`~``~` 3
+         4 ~`~~~~`~~`~~`C`~``~~`~~~`~```~``~ 4
+
+           012345678901234567890123456789012
+                     1         2         3
+
+The treasure chests don't move around. Sonar devices can detect treasure chests
+up to a distance of 9 spaces. Try to collect all 3 chests before running out of
+sonar devices. Good luck!
+          
+Press enter to continue...''')
+    input()
