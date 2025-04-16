@@ -181,6 +181,48 @@ def getCornerBestMove(board, computerTile):
             bestScore = score
     return bestMove
 
+def getWorstMove(board, tile):
+    # Return the move that flips the least number of tiles.
+    possibleMoves = getValidMoves(board, tile)
+    random.shuffle(possibleMoves) # Randomize the order of the moves.
+
+    # Find the lowest scoring move possible
+    worstScore = 64
+    for x, y in possibleMoves:
+        boardCopy = getBoardCopy(board)
+        makeMove(boardCopy, tile, x, y)
+        score = getScoreOfBoard(boardCopy)[tile]
+        if score < worstScore:
+            worstMove = [x, y]
+            worstScore = score
+
+    return worstMove
+
+def getRandomMove(board, tile):
+    possibleMoves = getValidMoves(board, tile)
+    return random.choice(possibleMoves)
+
+def isOnSide(x, y):
+    return x == 0 or x == WIDTH - 1 or y == 0 or y == HEIGHT - 1
+
+def getCornerSideBestMove(board, tile):
+    # Return a corner move, a side move, or a best move.
+    possibleMoves = getValidMoves(board, tile)
+    random.shuffle(possibleMoves) # Randomize the order of the moves.
+
+    # Always go for a corner if available.
+    for x, y in possibleMoves:
+        if isOnCorner(x, y):
+            return [x, y]
+        
+    # If there is no corner move to make, return a side move.
+
+    for x, y in possibleMoves:
+        if isOnSide(x, y):
+            return [x, y]
+        
+    return getCornerBestMove(board, tile) # Do what the normal AI would do.
+
 def printScore(board, playerTile, computerTile):
     scores = getScoreOfBoard(board)
     print('You: %s points. Computer: %s points.' % (scores[playerTile], scores[computerTile]))
@@ -213,7 +255,7 @@ def playGame(playerTile, computerTile):
                 #    drawBoard(board)
                 #printScore(board, playerTile, computerTile)
 
-                move = getComputerMove(board, playerTile)
+                move = getCornerBestMove(board, playerTile)
                 #if move == 'quit':
                 #    print('Thanks for playing!')
                 #    sys.exit() # Terminate the program.
@@ -230,7 +272,7 @@ def playGame(playerTile, computerTile):
                 #printScore(board, playerTile, computerTile)
 
                 #input('Press Enter to see the computer\'s move.')
-                move = getComputerMove(board, computerTile)
+                move = getCornerSideBestMove(board, computerTile)
                 makeMove(board, computerTile, move[0], move[1])
             turn = 'player'
 
